@@ -24,6 +24,8 @@ export async function initUi(ctx) {
     $id('st-qq-persona-name').prop('checked', settings.usePersonaName);
     $id('st-qq-manual-replies').prop('checked', settings.sendManualReplies);
     $id('st-qq-strip-thinking').prop('checked', settings.stripThinking);
+    $id('st-qq-strip-markdown').prop('checked', settings.stripMarkdown);
+    $id('st-qq-dialogue-only').prop('checked', settings.dialogueOnly);
     $id('st-qq-max-chars').val(settings.maxCharsPerMessage);
 
     // ---- 设置绑定 ----
@@ -79,6 +81,16 @@ export async function initUi(ctx) {
 
     $id('st-qq-strip-thinking').on('change', () => {
         settings.stripThinking = $id('st-qq-strip-thinking').prop('checked');
+        saveSettings();
+    });
+
+    $id('st-qq-strip-markdown').on('change', () => {
+        settings.stripMarkdown = $id('st-qq-strip-markdown').prop('checked');
+        saveSettings();
+    });
+
+    $id('st-qq-dialogue-only').on('change', () => {
+        settings.dialogueOnly = $id('st-qq-dialogue-only').prop('checked');
         saveSettings();
     });
 

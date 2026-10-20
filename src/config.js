@@ -12,6 +12,8 @@ export const DEFAULT_SETTINGS = {
     usePersonaName: true,
     sendManualReplies: true,
     stripThinking: true,
+    stripMarkdown: true,
+    dialogueOnly: false,
     maxCharsPerMessage: 3000,
     generationTimeoutMs: 300000,
 };

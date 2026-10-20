@@ -52,6 +52,16 @@
                 <span>剥离思考内容（&lt;thinking&gt; 等标签）</span>
             </label>
 
+            <label class="checkbox_label">
+                <input id="st-qq-strip-markdown" type="checkbox">
+                <span>格式清洗（去除 Markdown 符号）</span>
+            </label>
+
+            <label class="checkbox_label">
+                <input id="st-qq-dialogue-only" type="checkbox">
+                <span>只发送引号内的对话（忽略旁白，按引号分段）</span>
+            </label>
+
             <div class="st-qq-field">
                 <label for="st-qq-max-chars">单条消息长度上限（字符）</label>
                 <input id="st-qq-max-chars" type="number" class="text_pole" min="200" max="5000" step="100">

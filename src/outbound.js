@@ -1,5 +1,5 @@
 import { chat, eventSource, event_types } from '../st-api.js';
-import { cleanReplyText, splitForQQ, preview } from './message-utils.js';
+import { cleanReplyText, extractQuotedSegments, splitForQQ, preview } from './message-utils.js';
 import { log } from './logger.js';
 
 function sleep(ms) {
@@ -26,7 +26,10 @@ export function createOutbound({ ctx, client }) {
             return;
         }
 
-        const text = cleanReplyText(snapshot.mes, { stripThinking: ctx.settings.stripThinking });
+        const text = cleanReplyText(snapshot.mes, {
+            stripThinking: ctx.settings.stripThinking,
+            stripMarkdown: ctx.settings.stripMarkdown,
+        });
         if (!text) {
             log('warn', '回复清洗后为空，跳过发送');
             return;
@@ -38,7 +41,19 @@ export function createOutbound({ ctx, client }) {
             return;
         }
 
-        const chunks = splitForQQ(text, ctx.settings.maxCharsPerMessage);
+        let chunks;
+        if (ctx.settings.dialogueOnly) {
+            const dialogues = extractQuotedSegments(text);
+            if (dialogues.length > 0) {
+                log('info', `提取到 ${dialogues.length} 段引号对话`);
+                chunks = dialogues.flatMap(segment => splitForQQ(segment, ctx.settings.maxCharsPerMessage));
+            } else {
+                log('warn', '未找到引号对话，回退为整段发送');
+                chunks = splitForQQ(text, ctx.settings.maxCharsPerMessage);
+            }
+        } else {
+            chunks = splitForQQ(text, ctx.settings.maxCharsPerMessage);
+        }
         for (let index = 0; index < chunks.length; index += 1) {
             try {
                 await client.sendPrivateMsg(target, chunks[index]);

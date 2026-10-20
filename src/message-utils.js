@@ -57,7 +57,7 @@ export function segmentsToText(message, selfId) {
  * @param {{ stripThinking?: boolean }} options
  * @returns {string}
  */
-export function cleanReplyText(text, { stripThinking = true } = {}) {
+export function cleanReplyText(text, { stripThinking = true, stripMarkdown = true } = {}) {
     if (!text) {
         return '';
     }
@@ -80,11 +80,90 @@ export function cleanReplyText(text, { stripThinking = true } = {}) {
     entityDecoder.innerHTML = result;
     result = entityDecoder.value;
 
+    if (stripMarkdown) {
+        result = stripMarkdownSyntax(result);
+    }
+
     result = result.replace(/\r\n/g, '\n');
     result = result.replace(/[ \t]+\n/g, '\n');
     result = result.replace(/\n{3,}/g, '\n\n');
 
     return result.trim();
+}
+
+/**
+ * 去掉 Markdown 语法符号，只保留文字本身。
+ * 保留换行和标点，不处理中文引号。
+ * @param {string} text
+ * @returns {string}
+ */
+function stripMarkdownSyntax(text) {
+    let result = String(text);
+
+    // 代码块 -> 代码内容
+    result = result.replace(/```[^\n]*\n?([\s\S]*?)```/g, '$1');
+    result = result.replace(/~~~[^\n]*\n?([\s\S]*?)~~~/g, '$1');
+    // 行内代码 -> 代码内容
+    result = result.replace(/`([^`\n]+)`/g, '$1');
+    // 图片 -> 空
+    result = result.replace(/!\[([^\]]*)\]\([^)]*\)/g, '');
+    // 链接 -> 链接文字
+    result = result.replace(/\[([^\]]+)\]\([^)]*\)/g, '$1');
+    // 标题、引用、水平线、列表符号
+    result = result.replace(/^\s{0,3}#{1,6}\s+/gm, '');
+    result = result.replace(/^\s{0,3}>\s?/gm, '');
+    result = result.replace(/^\s{0,3}([-*_])\s*(?:\1\s*){2,}$/gm, '');
+    result = result.replace(/^\s{0,3}([-*+]|\d+[.)])\s+/gm, '');
+    // 粗体、删除线、斜体
+    result = result.replace(/\*\*([\s\S]*?)\*\*/g, '$1');
+    result = result.replace(/__([\s\S]*?)__/g, '$1');
+    result = result.replace(/~~([\s\S]*?)~~/g, '$1');
+    result = result.replace(/(^|[^*])\*([^*\n]+)\*(?!\*)/g, '$1$2');
+    result = result.replace(/(^|[^_])_([^_\n]+)_(?!_)/g, '$1$2');
+
+    return result;
+}
+
+const QUOTE_PAIRS = [
+    ['「', '」'],
+    ['『', '』'],
+    ['“', '”'],
+    ['"', '"'],
+];
+
+/**
+ * 提取文本里成对引号中的内容，按出现顺序返回。
+ * 支持「」、『』、“”、英文双引号；不处理嵌套，取到第一个闭合引号为止。
+ * @param {string} text
+ * @returns {string[]}
+ */
+export function extractQuotedSegments(text) {
+    const source = String(text ?? '');
+    const segments = [];
+    let index = 0;
+
+    while (index < source.length) {
+        const current = source[index];
+        const pair = QUOTE_PAIRS.find(([open]) => open === current);
+        if (!pair) {
+            index += 1;
+            continue;
+        }
+
+        const [open, close] = pair;
+        const end = source.indexOf(close, index + open.length);
+        if (end === -1) {
+            break;
+        }
+
+        const content = source.slice(index + open.length, end).trim();
+        if (content) {
+            segments.push(content);
+        }
+        index = end + close.length;
+    }
+
+    return segments;
 }
 
 /**
