@@ -1,0 +1,101 @@
+.st-qq-settings {
+    margin-bottom: 10px;
+}
+
+.st-qq-status-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.st-qq-status {
+    font-size: 0.9em;
+    padding: 2px 8px;
+    border-radius: 10px;
+    white-space: nowrap;
+}
+
+.st-qq-state-idle {
+    background: rgba(128, 128, 128, 0.2);
+}
+
+.st-qq-state-pending {
+    background: rgba(255, 193, 7, 0.25);
+}
+
+.st-qq-state-ok {
+    background: rgba(76, 175, 80, 0.25);
+}
+
+.st-qq-state-bad {
+    background: rgba(244, 67, 54, 0.25);
+}
+
+.st-qq-current {
+    font-size: 0.9em;
+    opacity: 0.85;
+    margin: 6px 0 10px;
+}
+
+.st-qq-field {
+    margin-bottom: 8px;
+}
+
+.st-qq-field label {
+    display: block;
+    font-size: 0.9em;
+    margin-bottom: 3px;
+    opacity: 0.9;
+}
+
+.st-qq-field input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.st-qq-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 10px 0;
+}
+
+.st-qq-log-title {
+    font-size: 0.9em;
+    margin: 8px 0 4px;
+    opacity: 0.85;
+}
+
+.st-qq-logs {
+    max-height: 220px;
+    overflow-y: auto;
+    border: 1px solid rgba(128, 128, 128, 0.3);
+    border-radius: 6px;
+    padding: 6px;
+    font-family: monospace;
+    font-size: 0.8em;
+    line-height: 1.4;
+    background: rgba(0, 0, 0, 0.08);
+}
+
+.st-qq-log {
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.st-qq-log-in {
+    color: #5aa9e6;
+}
+
+.st-qq-log-out {
+    color: #4caf50;
+}
+
+.st-qq-log-warn {
+    color: #ffb300;
+}
+
+.st-qq-log-error {
+    color: #ef5350;
+}

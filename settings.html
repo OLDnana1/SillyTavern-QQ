@@ -1,0 +1,70 @@
+<div class="st-qq-settings">
+    <div class="inline-drawer">
+        <div class="inline-drawer-toggle inline-drawer-header">
+            <b>QQ Bridge (SnowLuma)</b>
+            <div class="inline-drawer-icon fa-solid fa-circle-chevron-down down"></div>
+        </div>
+        <div class="inline-drawer-content">
+            <div class="st-qq-status-row">
+                <label class="checkbox_label">
+                    <input id="st-qq-enabled" type="checkbox">
+                    <span>启用桥接</span>
+                </label>
+                <span id="st-qq-status" class="st-qq-status st-qq-state-idle">未连接</span>
+            </div>
+
+            <div class="st-qq-current">
+                当前聊天：<span id="st-qq-current-chat">未打开角色卡</span>
+            </div>
+
+            <div class="st-qq-field">
+                <label for="st-qq-ws-url">OneBot WebSocket 地址</label>
+                <input id="st-qq-ws-url" type="text" class="text_pole" placeholder="ws://127.0.0.1:3001/">
+            </div>
+
+            <div class="st-qq-field">
+                <label for="st-qq-token">Access Token</label>
+                <input id="st-qq-token" type="password" class="text_pole" placeholder="SnowLuma 里 OneBot 的 access token">
+            </div>
+
+            <div class="st-qq-field">
+                <label for="st-qq-allowed">允许的 QQ 号</label>
+                <input id="st-qq-allowed" type="text" class="text_pole" placeholder="留空则只接受默认接收 QQ，多个用逗号分隔">
+            </div>
+
+            <div class="st-qq-field">
+                <label for="st-qq-default-target">默认接收 QQ</label>
+                <input id="st-qq-default-target" type="text" class="text_pole" placeholder="酒馆手动生成时，回复发到这个 QQ">
+            </div>
+
+            <label class="checkbox_label">
+                <input id="st-qq-persona-name" type="checkbox">
+                <span>QQ 消息写入时使用当前 persona 名</span>
+            </label>
+
+            <label class="checkbox_label">
+                <input id="st-qq-manual-replies" type="checkbox">
+                <span>酒馆手动触发的 AI 回复也发送到 QQ</span>
+            </label>
+
+            <label class="checkbox_label">
+                <input id="st-qq-strip-thinking" type="checkbox">
+                <span>剥离思考内容（&lt;thinking&gt; 等标签）</span>
+            </label>
+
+            <div class="st-qq-field">
+                <label for="st-qq-max-chars">单条消息长度上限（字符）</label>
+                <input id="st-qq-max-chars" type="number" class="text_pole" min="200" max="5000" step="100">
+            </div>
+
+            <div class="st-qq-actions">
+                <button id="st-qq-test" class="menu_button">测试连接</button>
+                <button id="st-qq-send-test" class="menu_button">发送测试消息</button>
+                <button id="st-qq-clear-logs" class="menu_button">清空日志</button>
+            </div>
+
+            <div class="st-qq-log-title">最近日志</div>
+            <div id="st-qq-logs" class="st-qq-logs"></div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,10 @@
+{
+    "name": "sillytavern-qq-bridge",
+    "version": "0.1.0",
+    "private": true,
+    "type": "module",
+    "description": "SillyTavern 第三方扩展：通过 SnowLuma OneBot 把 QQ 私聊接到当前角色卡聊天",
+    "scripts": {
+        "check": "node --check index.js && node --check st-api.js"
+    }
+}
